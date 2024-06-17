@@ -1,2 +1,5 @@
-theme: jekyll-theme-cayman
+plugins:
+  - jekyll-remote-theme
+
+remote_theme: ngzhio/jekyll-theme-hamilton
 title: Seg_Tree's blog
