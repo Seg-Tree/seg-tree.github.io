@@ -20,7 +20,7 @@ inline void modify(const int &x,int k,int pre,int l,int r){
 ```
 $k$是第$i$棵树的当前结点，$pre$是第$i-1$棵树的对应结点。
 没有必要建空树。
-![image](https://img2020.cnblogs.com/blog/2567452/202110/2567452-20211002125052735-723329686.png)
+![image](https://github.com/Seg-Tree/seg_tree.github.io/blob/main/OI/%E4%B8%BB%E5%B8%AD%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/chairman_tree.png?raw=true)
 对着图理解一下，就是序列每扩张一位，就需要一棵新树，该树可以在上一棵树的基础上建，需要变动的只是```modify()```中递归的那一条链。反正最后我们要的就是这$n$棵权值线段树。
 
 好了现在我们有$n$棵权值线段树了，那么该如何查询呢？
