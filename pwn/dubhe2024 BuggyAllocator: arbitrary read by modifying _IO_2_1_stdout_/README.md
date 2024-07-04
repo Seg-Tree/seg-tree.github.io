@@ -1,7 +1,5 @@
 在堆题中遇到没有show()函数的情况，导致无法泄露地址。这时可以通过修改_IO_2_1_stdout_来强制程序输出一段内存，从而泄露需要的地址。
 
-例题：[dubhe2024 BuggyAllocator](https://files.cnblogs.com/files/blogs/709433/BuggyAllocator.7z?t=1711594448&download=true "dubhe2024 BuggyAllocator")
-
 dubhe2024，xctf分站赛最后一场凄惨爆零，主看了这道题一整天，逆清楚了但找不到漏洞。~~事后来看当时就算找到洞了也不会这种泄露手法。~~
 
 简单逆一下程序，结构体整理好，可以发现就是一般菜单题，但当size<=0x80，即fastsize时会使用自己写的堆管理器来管理。管理方式：一个个纯粹的单链表构成类fastbin结构，当该size的fastbin不足时会尝试往该fastbin中塞20个。首先尝试从预先malloc出来的topchunk到extopchunk这段空间中取20*size的空间，拿出来返回回去并往fastbin中塞19个；若取不到20个那么少取一些也行；若topchunk到extopchunk的空间连一个size都取不出来，则先将extopchunk到topchunk这段空间放入fastbin防止内存泄漏，随后先调整topchunk再进行分配。首先找比当前size大的fastbin，若存在，则取出该fastbin并将该chunk的头尾设为topchunk和extopchunk，再返回第一步尝试分配；若没有比当前chunk大的fastbin，就考虑malloc(40*size)作为topchunk和extopchunk，再返回第一步尝试分配。
@@ -60,7 +58,7 @@ fake_stdout+= p64(0) + p64(0)
 fake_stdout+= p64(0x4045d0) + p64(0x4046d0)
 ```
 不用自作聪明把其他的什么_IO_read_ptr或者_IO_buf_base改到同一个什么可写地址，这样好像会让cout<<出错然后自己exit()。前面写0后面不管就可以了，程序做完一次cout就自动变回去了。
-![image](https://img2024.cnblogs.com/blog/2567452/202403/2567452-20240328162330796-2054394100.png)
+![image](https://github.com/Seg-Tree/seg-tree.github.io_1/blob/main/pwn/dubhe2024%20BuggyAllocator%3A%20arbitrary%20read%20by%20modifying%20_IO_2_1_stdout_/BuggyAllocator.png)
 专门挑了个方便点的地方把libc和heap都搞出来，然后就泄露好了。
 
 再就是打house of apple就行了。避免麻烦直接用system了，发现直接system("/bin/sh")或者system("sh")会导致进不去system，毕竟写"/bin/sh"的那里是_flags，不过前面加个空格就好了，但system(" sh")拿到的shell不知道为啥没法交互。最终system(" cat flag")拿了flag，还是没拿到shell。学了个py好看的语法糖：
