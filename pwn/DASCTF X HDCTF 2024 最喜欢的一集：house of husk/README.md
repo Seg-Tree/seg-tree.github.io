@@ -14,7 +14,10 @@ printf函数的一个功能是，可以允许用户自定义格式化字符所�
 可控地址对应偏移处写上目标执行地址（其实正常堆题把chunk填满就行了）。
 随后调用带格式化参数的printf，即可任意地址执行。
 
-例题：
+例题：[DASCTF X HDCTF 2024 最喜欢的一集](https://github.com/Seg-Tree/seg-tree.github.io/blob/main/pwn/DASCTF%20X%20HDCTF%202024%20%E6%9C%80%E5%96%9C%E6%AC%A2%E7%9A%84%E4%B8%80%E9%9B%86%EF%BC%9Ahouse%20of%20husk/pwn_4.7z)
+
+远程环境：glibc-2.31-0ubuntu9.15_amd64
+exp环境：glibc-2.31-0ubuntu9.16_amd64
 
 一个uaf，一次edit，一次show，限制chunk 0x500~0x540，一次backdoor任意写一字符。
 放进unsortedbin两个chunk，show uaf_chunk拿libc和heap。
@@ -86,5 +89,5 @@ add(0x530,"put the unsorted chunk into large bin")          ##4
 # gdb.attach(p,"b*$rebase(0x1d98)")
 p.sendlineafter("choice: \n","H4cked_6y_Seg_Tree")
 p.interactive()
-
 ```
+做的时候以为全程总共只能分配6个chunk，free之后也没法回收，所以苦恼了好一会风水，最大程度精简了exp使用的chunk。然后才发现压根没这限制（（
